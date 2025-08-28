@@ -3,6 +3,7 @@ from player import Player
 from sprites import *
 from pytmx.util_pygame import load_pygame
 from groups import AllSprites
+from dog import Dog
 
 from random import randint
 
@@ -18,6 +19,11 @@ class Game:
         # groups
         self.all_sprites = AllSprites()
         self.collision_sprites = pygame.sprite.Group()
+
+        # audio
+        self.music = pygame.mixer.Sound(join('audio', 'music.wav'))
+        self.music.set_volume(0.07)
+        self.music.play(loops = -1)
 
         self.setup()
 
@@ -40,6 +46,8 @@ class Game:
         for obj in map.get_layer_by_name('Entities'):
             if obj.name == 'Player':
                    self.player = Player((obj.x, obj.y), self.all_sprites, self.collision_sprites)
+            if obj.name == 'Dog':
+                   self.dog = Dog((obj.x, obj.y), (self.all_sprites, self.collision_sprites))
 
     def run(self):
         while self.running:
