@@ -63,19 +63,19 @@
   <object id="39" name="Enemy" x="1734.67" y="946.667">
    <point/>
   </object>
-  <object id="40" name="Enemy" x="2093.33" y="782.667">
+  <object id="40" name="Coffee" x="2093.33" y="782.667">
    <point/>
   </object>
   <object id="41" name="Enemy" x="2556" y="1042.67">
    <point/>
   </object>
-  <object id="42" name="Enemy" x="2460" y="1554.67">
+  <object id="42" name="Coffee" x="2460" y="1554.67">
    <point/>
   </object>
   <object id="43" name="Enemy" x="2092" y="1152">
    <point/>
   </object>
-  <object id="44" name="Enemy" x="1230.67" y="758.667">
+  <object id="44" name="Coffee" x="1230.67" y="758.667">
    <point/>
   </object>
   <object id="45" name="Enemy" x="1032" y="626.667">
@@ -138,7 +138,7 @@
   <object id="64" name="Enemy" x="1752" y="2620">
    <point/>
   </object>
-  <object id="65" name="Enemy" x="2104" y="2369.33">
+  <object id="65" name="Coffee" x="2104" y="2369.33">
    <point/>
   </object>
   <object id="66" name="Enemy" x="2570.67" y="2196">
@@ -156,7 +156,7 @@
   <object id="70" name="Dog" x="1272" y="2018.67">
    <point/>
   </object>
-  <object id="71" name="Enemy" x="1618.67" y="1912">
+  <object id="71" name="Coffee" x="1618.67" y="1912">
    <point/>
   </object>
   <object id="72" name="Enemy" x="1473.33" y="1220">

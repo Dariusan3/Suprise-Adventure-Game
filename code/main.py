@@ -4,8 +4,7 @@ from sprites import *
 from pytmx.util_pygame import load_pygame
 from groups import AllSprites
 from dog import Dog
-
-from random import randint
+from coffee import Coffee
 
 class Game:
     def __init__(self):
@@ -28,7 +27,13 @@ class Game:
         self.setup()
 
         #sprites
-     
+
+    def check_coffee_collection(self):
+        map = load_pygame(join('data', 'maps', 'world.tmx'))
+        if self.dog.dialogue_finished:
+            for obj in map.get_layer_by_name('Entities'):
+                if obj.name == 'Coffee':
+                    self.coffee = Coffee((obj.x, obj.y), (self.all_sprites, self.collision_sprites))
 
     def setup(self):
         map = load_pygame(join('data', 'maps', 'world.tmx'))
@@ -61,6 +66,7 @@ class Game:
 
             # update
             self.all_sprites.update(dt)
+            self.check_coffee_collection()
 
             # draw
             self.display_surface.fill('black')

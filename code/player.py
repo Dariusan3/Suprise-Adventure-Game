@@ -1,4 +1,5 @@
 from settings import *
+from dog import Dog
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, collision_sprites):
@@ -10,12 +11,12 @@ class Player(pygame.sprite.Sprite):
         self.hitbox_rect = self.rect.inflate(-20, -60)
         self.hitbox_rect.center = self.rect.center
         self.pos = pygame.Vector2(self.rect.x, self.rect.y)  # store position as float
+        self.speaking = False
 
         # movement
         self.direction = pygame.Vector2()
         self.speed = 500
         self.collision_sprites = collision_sprites
-
     def load_images(self):
         self.frames = {'left': [], 'right': [], 'up': [], 'down': []}
 
@@ -46,6 +47,12 @@ class Player(pygame.sprite.Sprite):
     def collision(self, direction):
         for sprite in self.collision_sprites:
             if sprite.rect.colliderect(self.hitbox_rect):
+                if isinstance(sprite, Dog):
+                    sprite.speaking = True
+                    self.speaking = True
+                else:
+                    self.speaking = False
+                    sprite.speaking = False
                 if direction == 'horizontal':
                     if self.direction.x > 0:
                         self.hitbox_rect.right = sprite.rect.left

@@ -8,6 +8,20 @@ class Dog(pygame.sprite.Sprite):
         self.image = pygame.image.load(join('images', 'dog', 'idle', '0.png')).convert_alpha()
         self.rect = self.image.get_rect(center=pos)
         self.direction = pygame.Vector2()
+        self.speaking = False
+        self.dialogue = [
+            {"speaker": "dog", "text": "Woof woof! Anastasija! Happy Birthday!"},
+            {"speaker": "player", "text": "Hi Tobi! Thank you, my sweet poodle friend!"},
+            {"speaker": "dog", "text": "I have a very important mission for you today!"},
+            {"speaker": "player", "text": "Oh? What kind of mission?"},
+            {"speaker": "dog", "text": "I need you to find cappuccinos! Lots of them!"},
+            {"speaker": "player", "text": "Cappuccinos? That's my favorite also!"},
+            {"speaker": "dog", "text": "I love the smell too! It makes me so energetic!"},
+            {"speaker": "player", "text": "Of course! Let's go find them!"},
+            {"speaker": "dog", "text": "You're the best! Adventure time!"}
+        ]
+        self.speech_index = 0
+        self.dialogue_finished = False
 
     def load_images(self):
         self.frames = {'idle': []}
@@ -17,7 +31,6 @@ class Dog(pygame.sprite.Sprite):
                 if file_names:
                     for file_name in sorted(file_names, key=lambda x: int(x.split('.')[0])):
                         full_path = join(folder_path, file_name)
-                        print(full_path)  # Debugging line to check file paths
                         surf = pygame.image.load(full_path).convert_alpha()
                         self.frames[state].append(surf)
 
