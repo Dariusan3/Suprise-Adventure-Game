@@ -3,9 +3,11 @@ from settings import *
 class Dog(pygame.sprite.Sprite):
     def __init__(self, pos, groups):
         super().__init__(groups)
-        self.load_images()
+        from main import resource_path
+        import os
+        self.load_images(resource_path)
         self.state, self.frame_index = 'idle', 0
-        self.image = pygame.image.load(join('images', 'dog', 'idle', '0.png')).convert_alpha()
+        self.image = pygame.image.load(resource_path(os.path.join('images', 'dog', 'idle', '0.png'))).convert_alpha()
         self.rect = self.image.get_rect(center=pos)
         self.direction = pygame.Vector2()
         self.speaking = False
@@ -36,15 +38,16 @@ class Dog(pygame.sprite.Sprite):
         self.speech2_index = 0
         self.dialogue2_finished = False
 
-    def load_images(self):
+    def load_images(self, resource_path):
+        import os
         self.frames = {'idle': []}
 
         for state in self.frames.keys():
-            for folder_path, sub_folders, file_names in walk(join('images', 'dog', state)):
+            for folder_path, sub_folders, file_names in walk(resource_path(os.path.join('images', 'dog', state))):
                 if file_names:
                     for file_name in sorted(file_names, key=lambda x: int(x.split('.')[0])):
-                        full_path = join(folder_path, file_name)
-                        surf = pygame.image.load(full_path).convert_alpha()
+                        full_path = os.path.join(folder_path, file_name)
+                        surf = pygame.image.load(resource_path(full_path)).convert_alpha()
                         self.frames[state].append(surf)
 
     def animate(self, dt):

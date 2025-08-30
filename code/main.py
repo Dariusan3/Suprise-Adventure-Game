@@ -5,6 +5,16 @@ from pytmx.util_pygame import load_pygame
 from groups import AllSprites
 from dog import Dog
 from coffee import Coffee
+import os
+
+# Add this function to handle resource paths
+def resource_path(relative_path):
+    import os, sys
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 class Game:
     def __init__(self):
@@ -20,7 +30,7 @@ class Game:
         self.collision_sprites = pygame.sprite.Group()
 
         # audio
-        self.music = pygame.mixer.Sound(join('audio', 'music.wav'))
+        self.music = pygame.mixer.Sound(resource_path(os.path.join('audio', 'music.wav')))
         self.music.set_volume(0.07)
         self.music.play(loops = -1)
 
@@ -34,7 +44,7 @@ class Game:
         self.coffees_spawned = False
         self.show_return_message = True
     def spawn_coffees(self):
-        map = load_pygame(join('data', 'maps', 'world.tmx'))
+        map = load_pygame(resource_path(os.path.join('data', 'maps', 'world.tmx')))
         for obj in map.get_layer_by_name('Entities'):
             if obj.name == 'Coffee':
                 coffee = Coffee((obj.x, obj.y), (self.all_sprites, self.collision_sprites))
@@ -42,7 +52,7 @@ class Game:
                 
 
     def setup(self):
-        map = load_pygame(join('data', 'maps', 'world.tmx'))
+        map = load_pygame(resource_path(os.path.join('data', 'maps', 'world.tmx')))
 
         for x, y, image in map.get_layer_by_name('Ground').tiles():
             Sprite((x * TILE_SIZE, y * TILE_SIZE), image, self.all_sprites)
@@ -118,7 +128,7 @@ class Game:
                 self.dog.speaking = False
                 # Try to load a cute background image
                 try:
-                    bg_image = pygame.image.load(join('images', 'lalele', 'lalele.jpg')).convert()
+                    bg_image = pygame.image.load(resource_path(os.path.join('images', 'lalele', 'lalele.jpg'))).convert()
                     bg_image = pygame.transform.scale(bg_image, (WINDOW_WIDTH, WINDOW_HEIGHT))
                     self.display_surface.blit(bg_image, (0, 0))
                 except Exception:
