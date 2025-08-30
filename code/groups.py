@@ -1,7 +1,5 @@
-from dog import Dog
 from player import Player
 from settings import *
-from coffee import Coffee
 
 class AllSprites(pygame.sprite.Group):
     def __init__(self):
@@ -41,18 +39,34 @@ class AllSprites(pygame.sprite.Group):
             for sprite in sorted(layer, key = lambda sprite: sprite.rect.centery):
                 self.display_surface.blit(sprite.image, sprite.rect.topleft + self.offset)
                 # Dialogue system: dog and player can speak
-                if hasattr(sprite, "dialogue") and sprite.speaking:
-                    if sprite.speech_index < len(sprite.dialogue):
-                        current = sprite.dialogue[sprite.speech_index]
+                if hasattr(sprite, "dialogue1") and sprite.speaking and not sprite.dialogue1_finished:
+                    if sprite.speech1_index < len(sprite.dialogue1):
+                        current = sprite.dialogue1[sprite.speech1_index]
                         if current["speaker"] == "dog":
                             bubble_pos = sprite.rect.topleft + self.offset + pygame.Vector2(0, -20)
-                        else:  # "player"
+                        else:  # "Anastasija"
                             player_sprite = next((s for s in self.sprites() if isinstance(s, Player)), None)
                             if player_sprite:
                                 bubble_pos = player_sprite.rect.topleft + self.offset + pygame.Vector2(0, -20)
                         self.draw_speech_bubble(self.display_surface, current["text"], (0, 0, 0), (255, 255, 255), bubble_pos, 32)
                     else:
-                        sprite.dialogue_finished = True
+                        sprite.speaking = False
+                        sprite.dialogue1_finished = True
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                            sprite.speech_index = (sprite.speech_index + 1)
+                            sprite.speech1_index = (sprite.speech1_index + 1)
+                elif hasattr(sprite, "dialogue2") and sprite.dialogue1_finished and sprite.all_coffee_collected and sprite.speaking:
+                    if sprite.speech2_index < len(sprite.dialogue2):
+                        current = sprite.dialogue2[sprite.speech2_index]
+                        if current["speaker"] == "Tobi":
+                            bubble_pos = sprite.rect.topleft + self.offset + pygame.Vector2(0, -20)
+                        else:  # "Anastasija"
+                            player_sprite = next((s for s in self.sprites() if isinstance(s, Player)), None)
+                            if player_sprite:
+                                bubble_pos = player_sprite.rect.topleft + self.offset + pygame.Vector2(0, -20)
+                        self.draw_speech_bubble(self.display_surface, current["text"], (0, 0, 0), (255, 255, 255), bubble_pos, 32)
+                    else:
+                        sprite.dialogue2_finished = True
+                    for event in pygame.event.get():
+                        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                            sprite.speech2_index = (sprite.speech2_index + 1)

@@ -50,9 +50,9 @@ class Player(pygame.sprite.Sprite):
                 if isinstance(sprite, Dog):
                     sprite.speaking = True
                     self.speaking = True
-                else:
-                    self.speaking = False
-                    sprite.speaking = False
+                # else:
+                #     self.speaking = False
+                #     sprite.speaking = False
                 if direction == 'horizontal':
                     if self.direction.x > 0:
                         self.hitbox_rect.right = sprite.rect.left
