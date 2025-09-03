@@ -40,6 +40,7 @@ class Game:
         self.coffee_count = 0
         self.coffees = []
         self.total_coffees = 5  # update if you want to count dynamically
+        self.show_intro_message = True
         self.show_coffee_message = False
         self.coffees_spawned = False
         self.show_return_message = True
@@ -71,6 +72,7 @@ class Game:
                    self.dog = Dog((obj.x, obj.y), (self.all_sprites, self.collision_sprites))
 
     def run(self):
+        intro_timer = 0
         while self.running:
             dt = self.clock.tick() / 1000
 
@@ -98,10 +100,24 @@ class Game:
             # draw
             self.display_surface.fill('black')
             self.all_sprites.draw(self.player.rect.center)
-            # Draw coffee count in top-left corner
-            font = pygame.font.SysFont(None, 36)
-            text = font.render(f"Cappuccinos: {self.coffee_count}/{self.total_coffees}", True, (255, 255, 255))
-            self.display_surface.blit(text, (20, 20))
+
+            if self.dog.speaking:
+                self.show_intro_message = False
+                
+            if self.dog.dialogue1_finished:
+                # Draw coffee count in top-left corner
+                font = pygame.font.SysFont(None, 36)
+                text = font.render(f"Cappuccinos: {self.coffee_count}/{self.total_coffees}", True, (255, 255, 255))
+                self.display_surface.blit(text, (20, 20))
+
+            if self.show_intro_message:
+                msg_font = pygame.font.SysFont(None, 40)
+                msg_text = msg_font.render("Find Tobi!", True, (255, 223, 225))
+                msg_rect = msg_text.get_rect(center=(WINDOW_WIDTH//2, 60))
+                self.display_surface.blit(msg_text, msg_rect)
+                msg_text = msg_font.render("Press space when you are interacting with Tobi.", True, (255, 223, 186))
+                msg_rect = msg_text.get_rect(center=(WINDOW_WIDTH//2, 100))
+                self.display_surface.blit(msg_text, msg_rect)
 
             # Show message after coffees appear
             if self.show_coffee_message:
