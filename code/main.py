@@ -20,10 +20,12 @@ class Game:
     def __init__(self):
         #setup
         pygame.init()
-        self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pygame.RESIZABLE)
         pygame.display.set_caption("Anastasija's Surprise Game")
         self.clock = pygame.time.Clock()
         self.running = True
+        self.size_w = WINDOW_WIDTH
+        self.size_h = WINDOW_HEIGHT
 
         # groups
         self.all_sprites = AllSprites()
@@ -44,6 +46,7 @@ class Game:
         self.show_coffee_message = False
         self.coffees_spawned = False
         self.show_return_message = True
+
     def spawn_coffees(self):
         map = load_pygame(resource_path(os.path.join('data', 'maps', 'world.tmx')))
         for obj in map.get_layer_by_name('Entities'):
@@ -72,13 +75,21 @@ class Game:
                    self.dog = Dog((obj.x, obj.y), (self.all_sprites, self.collision_sprites))
 
     def run(self):
-        intro_timer = 0
         while self.running:
             dt = self.clock.tick() / 1000
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                    pygame.quit()
+                if event.type == pygame.VIDEORESIZE:
+                    self.size_w = event.w
+                    self.size_h = event.h
+                    self.display_surface = pygame.display.set_mode((self.size_w, self.size_h), pygame.RESIZABLE)
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        self.running = False
+                        pygame.quit()
 
             # update
             self.all_sprites.update(dt)
@@ -103,7 +114,7 @@ class Game:
 
             if self.dog.speaking:
                 self.show_intro_message = False
-                
+
             if self.dog.dialogue1_finished:
                 # Draw coffee count in top-left corner
                 font = pygame.font.SysFont(None, 36)
@@ -145,7 +156,7 @@ class Game:
                 # Try to load a cute background image
                 try:
                     bg_image = pygame.image.load(resource_path(os.path.join('images', 'lalele', 'lalele.jpg'))).convert()
-                    bg_image = pygame.transform.scale(bg_image, (WINDOW_WIDTH, WINDOW_HEIGHT))
+                    bg_image = pygame.transform.scale(bg_image, (self.size_w, self.size_h))
                     self.display_surface.blit(bg_image, (0, 0))
                 except Exception:
                     self.display_surface.fill((255, 223, 238))
@@ -156,10 +167,10 @@ class Game:
                 msg2 = font_small.render("You the most important person for me trust me and I want to give my all to make you happy", True, (255, 20, 147))
                 msg3 = font_small.render("I love you the most and the words are simply too small for the all the love I have for you!", True, (186, 85, 211))
                 msg4 = font_small.render("Volim te! Te iubesc! I hope you feel all the love today!", True, (255, 20, 147))
-                self.display_surface.blit(msg1, msg1.get_rect(center=(WINDOW_WIDTH//2, WINDOW_HEIGHT//2 - 60)))
-                self.display_surface.blit(msg2, msg2.get_rect(center=(WINDOW_WIDTH//2, WINDOW_HEIGHT//2)))
-                self.display_surface.blit(msg3, msg3.get_rect(center=(WINDOW_WIDTH//2, WINDOW_HEIGHT//2 + 60)))
-                self.display_surface.blit(msg4, msg4.get_rect(center=(WINDOW_WIDTH//2, WINDOW_HEIGHT//2 + 120)))
+                self.display_surface.blit(msg1, msg1.get_rect(center=(self.size_w//2, self.size_h//2 - 60)))
+                self.display_surface.blit(msg2, msg2.get_rect(center=(self.size_w//2, self.size_h//2)))
+                self.display_surface.blit(msg3, msg3.get_rect(center=(self.size_w//2, self.size_h//2 + 60)))
+                self.display_surface.blit(msg4, msg4.get_rect(center=(self.size_w//2, self.size_h//2 + 120)))
 
             pygame.display.update()
 
