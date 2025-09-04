@@ -82,6 +82,7 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
                     pygame.quit()
+                    return  # Exit immediately after quitting
                 if event.type == pygame.VIDEORESIZE:
                     self.size_w = event.w
                     self.size_h = event.h
@@ -90,6 +91,7 @@ class Game:
                     if event.key == pygame.K_ESCAPE:
                         self.running = False
                         pygame.quit()
+                        return  # Exit immediately after quitting
 
             # update
             self.all_sprites.update(dt)
@@ -178,4 +180,4 @@ class Game:
 
 if __name__ == "__main__":
     game = Game()
-    game.run()  
+    game.run()

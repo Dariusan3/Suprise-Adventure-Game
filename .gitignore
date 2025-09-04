@@ -4,3 +4,4 @@ build/
 main.spec
 .venv/
 .DS_Store
+code/__pycache__/
